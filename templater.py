@@ -1,15 +1,13 @@
+#!/usr/bin/env python 
 
 import sys 
 import os 
 import jinja2
 import os.path
 
-if sys.argv[1] == "--help":
+if len(sys.argv) < 3 or sys.argv[1] == "--help":
     print("Usage: templater input_template output param1=value1 param2=value2 ...")
     exit(0)
-
-if len(sys.argv) < 3:
-    print("Please see templater --help")
 
 path = os.path.abspath(sys.argv[1])
 output = sys.argv[2]
