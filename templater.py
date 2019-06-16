@@ -23,7 +23,10 @@ else:
 
 def generate(path, output, params):
     for k,v in params.items():
-        output = output.replace("___%s___" % k, v)
+        try:
+            output = output.replace("___%s___" % k, v)
+        except TypeError:
+            pass
     input_file = open(path)
     contents = input_file.read()
     output_file = open(output, "w")
@@ -34,7 +37,10 @@ if os.path.isdir(path):
         print(root)
         my_root = os.path.abspath(root).replace(path, output)
         for k,v in params.items():
-            my_root = my_root.replace("___%s___" % k , v)
+            try:
+                my_root = my_root.replace("___%s___" % k , v)
+            except TypeError:
+                pass
         # first make path 
         os.makedirs(my_root, exist_ok=True)
         for name in files:
