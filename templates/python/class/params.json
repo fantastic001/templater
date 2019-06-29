@@ -1,0 +1,15 @@
+{
+	"name": "Example",
+	"inherit": "",
+	"fields": {
+		"field1": "str"
+	},
+	"methods": {
+		"method": {
+			"return": "int",
+			"param1": "int",
+			"param2": "str"
+		}
+	},
+	"create_parametrized_constructor": true
+}

@@ -1,0 +1,7 @@
+{
+	"name": "Sample",
+	"fields": {
+		"userName": "String",
+		"passwordField": "int"
+	}
+}
