@@ -9,7 +9,7 @@ class TemplateDirectory:
     
     def get_relative_root(self, root):
         result = ""
-        while not os.path.samefile(root, self.path):
+        while not os.path.samefile(root, os.path.split(self.path)[0]):
             result = os.path.join(os.path.split(root)[1], result) 
             root = os.path.split(root)[0]
         return result

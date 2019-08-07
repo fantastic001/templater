@@ -26,7 +26,7 @@ class DirectoryTemplateSource(TemplateSource):
                 for subdir in os.listdir(fullpath):
                     fullsubpath = os.path.join(fullpath, subdir)
                     if os.path.isdir(fullsubpath):
-                        res["%s/%s" % (name, subdir)] = TemplateDirectory(fullsubpath)
+                        res["%s/%s" % (name, subdir)] = Template(fullsubpath)
         return res
     
     def get_name(self):
