@@ -7,12 +7,13 @@ import os.path
 import json 
 
 from src import * 
+from src.sources import * 
 
 if len(sys.argv) < 3 or sys.argv[1] == "--help":
-    print("Usage: templater input_template output param1=value1 param2=value2 ...")
+    print("Usage: templater template output param1=value1 param2=value2 ...")
     exit(0)
 
-path = os.path.abspath(sys.argv[1])
+template = sys.argv[1]
 output = sys.argv[2]
 params = {}
 if os.path.isfile(sys.argv[3]):
@@ -23,10 +24,8 @@ if os.path.isfile(sys.argv[3]):
 else:
     params = {s.split("=")[0].strip(): s.split("=")[1].strip() for s in sys.argv[3:]}
 
-template = None
-if os.path.isdir(path):
-    template = TemplateDirectory(path)
+t = DirectoryTemplateSource("./templates").get_template(template)
+if t is not None:
+    t.generate(output, params)
 else:
-    template = TemplateDirectory(path)
-
-template.generate(output, params)
+    print("Error: template not found")
