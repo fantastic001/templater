@@ -43,4 +43,31 @@ def create_from_template_using_string(template, output, params_string):
     params = {s.split("=")[0].strip(): s.split("=")[1].strip() for s in params_string.split(" ")}
     do_template(template, output, params)
 stack.assignAction(create_from_template_using_string, "Generate from template with parameters specified as string like 'p1=v1 p2=v2'")
+
+stack.pop()
+stack.pop()
+def create_from_template_using_dialog(template, **kw):
+    params = {} # TODO get parameters from GUI created from template
+    do_template(template, os.getcwd(), params)
+stack.assignAction(create_from_template_using_dialog, "Generate from template in current directory using GUI dialog")
+stack.popAll()
+
+stack.pushCommand("verify")
+stack.pushCommand("tps")
+stack.pushVariable("path")
+def verify_tps(path, **kw):
+    # TODO implement
+    pass
+stack.assignAction(verify_tps, "Verify TPS file")
+stack.pop()
+stack.pop()
+
+stack.pushCommand("json")
+stack.pushVariable("tps_path")
+stack.pushVariable("json_path")
+def verify_json(tps_path, json_path, **kw):
+    # TODO implement
+    pass
+stack.assignAction(verify_json, "Verify if JSON file coontains all parameters specified in TPS")
+stack.popAll()
 stack.execute(sys.argv)
