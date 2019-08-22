@@ -15,15 +15,15 @@ GRAMMAR = '''
         | "{" object_type:object "}" ; 
     expression = number:/\d+/
         | logical:"true" | logical:"false" 
-        | '"' text:/[^"]/ '"' 
+        | '"' text:/[^"]*/ '"' 
         | "[" list:expr_list "]";
     expr_list = first:expression ["," rest:expr_list] | {};
 '''
 
 TEST = """
 
-param : string
-param2 : integer
+param : string = "haha"
+param2 : integer = 5
 param3 : boolean
 some_list : [integer]
 some_object : {
@@ -121,7 +121,7 @@ class Expression:
 class NumberExpression(Expression):
     def __init__(self, ast):
         self.num = ast.number 
-    def get_type():
+    def get_type(self):
         return Integer()
     def evaluate(self):
         return float(self.num)
@@ -129,7 +129,7 @@ class NumberExpression(Expression):
 class LogicalExpression(Expression):
     def __init__(self, ast):
         self.val = ast.logical
-    def get_type():
+    def get_type(self):
         return Boolean()
     def evaluate(self):
         if self.val == "true":
@@ -141,8 +141,8 @@ class LogicalExpression(Expression):
 
 class StringExpression(Expression):
     def __init__(self, ast):
-        self.val = self.text
-    def get_type():
+        self.val = ast.text
+    def get_type(self):
         return String()
     def evaluate(self):
         return self.val
@@ -150,7 +150,7 @@ class StringExpression(Expression):
 class ListExpression(Expression):
     def __init__(self, ast):
         self.val = ast.list
-    def get_type():
+    def get_type(self):
         return List(self.val.first.get_type())
     def evaluate(self):
         return [self.val.first.evaluate()] + self.val.rest.evaluate()
@@ -163,7 +163,8 @@ class Parameter:
         self.name = name
         self.ptype = ptype
         self.default = default
-        if default is not None and not self.default.get_type().is_compatible(self.ptype):
+        print("%s = %s" % (name, default))
+        if default is not None and not self.ptype.is_compatible(self.default):
             raise ValueError("%s and %s are not compatible" % (self.default.get_type(), self.ptype))
         if default is not None:
             self.default = default.evaluate()
@@ -198,17 +199,17 @@ class Semantics:
     def parameter_specification(self, ast):
         p = Parameter(ast.name, ast.type, ast.default)
         return p
-    def expressioon(self, ast):
+    def expression(self, ast):
         if ast.number != None:
             return NumberExpression(ast)
-        elif ast.textt != None:
+        elif ast.text != None:
             return StringExpression(ast)
         elif ast.logical != None:
             return LogicalExpression(ast)
         elif ast.list != None:
             return ListExpression(ast)
         else:
-            raise ValueError("Unknown expresssion type")
+            raise ValueError("Unknown expression type")
     def object(self, ast):
         return Object(ast)
     def _default(self, ast, *args, **kwargs):
