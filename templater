@@ -7,8 +7,8 @@ import os.path
 import json 
 from ArgumentStack import * 
 
-from src import * 
-from src.sources import * 
+from templater import * 
+from templater.sources import * 
 
 stack = ArgumentStack("Wrong command") 
 stack.popAll()
@@ -23,6 +23,13 @@ def do_template(template, output, params):
         t.generate(output, params)
     else:
         print("Error: template not found")
+
+stack.pushVariable("template_file")
+stack.pushVariable("output_directory")
+stack.pushVariable("json_file")
+stack.assignAction(lambda template_file, output_directory, json_file: TemplateFile(template_file).generate(output_directory, json.loads(open(json_file).read())), "Make  new file  from given template file and parameters in json file")
+
+stack.popAll()
 
 stack.pushCommand("create")
 stack.pushVariable("template")
