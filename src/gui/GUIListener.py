@@ -3,15 +3,18 @@ class GUIListener:
     def initialize_dialog(self, tps_object):
         pass
 
-    def handle_integer(self, name, value):
+    def handle_integer(self, name, label, value):
         pass
-    def handle_string(self, name, value):
+    def handle_string(self, name, label, value):
         pass
-    def handle_boolean(self, name, value):
+    def handle_boolean(self, name, label, value):
         pass
-    def handle_object(self, name, value):
+    def handle_object(self, name, label, value):
         pass
-    def handle_list(self, name, value):
+    def handle_list(self, name, label, value):
+        pass
+
+    def finalize_gui(self, sm):
         pass
 
     def show_gui(self):
