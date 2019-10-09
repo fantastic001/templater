@@ -37,8 +37,14 @@ class TkListener(GUIListener):
         self.generators.append(( name, lambda: ent.state()[0] == "selected"))
     def handle_object(self, name, label, value):
         print("Object")
-    def handle_list(self, name, label, value):
-        print("List")
+    def handle_integer_list(self, name, label, value):
+        print("integer list")
+    def handle_boolean_list(self, name, label, value):
+        print("boolean list")
+    def handle_string_list(self, name, label, value):
+        print("string list")
+    def handle_object_list(self, name, label, value):
+        print("object list")
 
     def finalize_gui(self, sm):
         def clicked():

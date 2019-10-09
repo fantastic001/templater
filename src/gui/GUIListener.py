@@ -11,7 +11,13 @@ class GUIListener:
         pass
     def handle_object(self, name, label, value):
         pass
-    def handle_list(self, name, label, value):
+    def handle_integer_list(self, name, label, value):
+        pass
+    def handle_boolean_list(self, name, label, value):
+        pass
+    def handle_string_list(self, name, label, value):
+        pass
+    def handle_object_list(self, name, label, value):
         pass
 
     def finalize_gui(self, sm):
