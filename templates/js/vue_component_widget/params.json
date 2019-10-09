@@ -1,0 +1,14 @@
+{
+	"name": "example",
+	"endpoint": "example",
+	"item_endpoints": [
+		{
+			"name": "getStatus",
+			"type": "get"
+		},
+		{
+			"name": "refreshTime",
+			"type": "post"
+		}
+	]
+}
