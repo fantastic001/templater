@@ -1,0 +1,11 @@
+{
+	"name": "example",
+	"endpoint": "exampleEndpoint",
+	"fields": [
+		{
+			"title": "Username",
+			"name": "username",
+			"type": "text"
+		}
+	]
+}
