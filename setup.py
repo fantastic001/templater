@@ -1,7 +1,7 @@
 from distutils.core import setup
 setup(
   name = 'templater',
-  packages = ['templater', 'templater.sources'],
+  packages = ['templater', 'templater.sources', 'templater.tps'],
   version = '0.1',
   description = 'Code generation tool based oon given templates',
   author = 'Stefan Nožinić',

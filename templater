@@ -9,6 +9,7 @@ from ArgumentStack import *
 
 from templater import * 
 from templater.sources import * 
+from templater.tps import parse_tps_file
 
 stack = ArgumentStack("Wrong command") 
 stack.popAll()
@@ -17,9 +18,15 @@ stack.assignAction(lambda: print(stack.getHelp()), "Get help")
 stack.popAll()
 
 
-def do_template(template, output, params):
+def do_template(template, output, params=None):
     t = DirectoryTemplateSource("./templates").get_template(template)
     if t is not None:
+        if params is None:
+            params_path = t.get_params_path()
+            editor = os.environ["EDITOR"]
+            import subprocess
+            subprocess.run([editor, params_path])
+            params = parse_tps_file(params_path).evaluate()
         t.generate(output, params)
     else:
         print("Error: template not found")
@@ -54,8 +61,7 @@ stack.assignAction(create_from_template_using_string, "Generate from template wi
 stack.pop()
 stack.pop()
 def create_from_template_using_dialog(template, **kw):
-    params = {} # TODO get parameters from GUI created from template
-    do_template(template, os.getcwd(), params)
+    do_template(template, os.getcwd())
 stack.assignAction(create_from_template_using_dialog, "Generate from template in current directory using GUI dialog")
 stack.popAll()
 
