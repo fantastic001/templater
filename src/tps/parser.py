@@ -310,4 +310,3 @@ def parse_tps_file(filename):
     f = open(filename, "r")
     return parse_tps(f.read())
 
-print(parse_tps(TEST).evaluate())
