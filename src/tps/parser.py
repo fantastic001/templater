@@ -32,7 +32,7 @@ param2 : integer = 5
 param3 : boolean
 some_list : [integer]
 some_object : {
-    a : integer
+    a : integer = 5
     b : string
     c : [string]
     d : {
@@ -114,6 +114,9 @@ class Object(Type):
         return False
     def __repr__(self):
         return "{\n\t" + "\n\t".join(list(str(p) for p in self.params)) + "\n}"
+    
+    def evaluate(self):
+        return {str(p.name): p.default for p in self.params}
 
 class Expression:
     def get_type(self):
@@ -172,7 +175,10 @@ class Parameter:
         if default is not None:
             self.default = default.evaluate()
         else:
-            self.default = None
+            if ptype.is_object():
+                self.default = self.ptype.evaluate()
+            else:
+                self.default = None
 
     def is_primitive(self):
         return self.ptype.is_primitive()
@@ -228,3 +234,4 @@ def parse_tps(tps_code):
 def parse_tps_file(filename):
     f = open(filename, "r")
     return parse_tps(f.read())
+
