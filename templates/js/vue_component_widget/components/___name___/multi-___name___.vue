@@ -1,6 +1,6 @@
 <script>
 import {{name }}Service from "./service";
-import {{ name }} from "./WidgetItemSingle.vue";
+import {{ name }} from "./{{ name }}.vue";
 
 
 export default {
