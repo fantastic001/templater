@@ -27,7 +27,7 @@ export default class {{ name }}Service
     {% else %}
     static {{service["name"]}}(id, data) 
     {
-        return axios.post(API_URL + "/{{ endpoint }}/" + id + "/{{service["name"]}}");
+        return axios.post(API_URL + "/{{ endpoint }}/" + id + "/{{service["name"]}}", data);
     }
     {% endif %}
     {% endfor %}
