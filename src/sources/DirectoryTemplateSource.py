@@ -36,7 +36,7 @@ class DirectoryTemplateSource(TemplateSource):
         Returns: str 
         """
         path = os.path.normcase(self.path)
-        return os.path.split(path)[1]
+        return os.path.split(path)[-1]
     
     def get_source(self):
         """

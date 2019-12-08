@@ -11,6 +11,8 @@ from templater import *
 from templater.sources import * 
 from templater.tps import parse_tps_file
 
+config = Configuration(os.environ["HOME"] + "/.tss.config")
+
 stack = ArgumentStack("Wrong command") 
 stack.popAll()
 stack.pushCommand("help")
@@ -19,7 +21,22 @@ stack.popAll()
 
 
 def do_template(template, output, params=None):
-    t = DirectoryTemplateSource("./templates").get_template(template)
+    t = None
+    available = []
+    for source in config.list_sources():
+        t = source.get_template(template)
+        if t is not None:
+            available.append(source)
+    if len(available) > 1:
+        print("Please select from which source: ")
+        for i, source in enumerate(availablle):
+            print("[%d] %s/%s" % (i, source.get_name(), template))
+        index = int(input(">> "))
+        t = available[index].get_template(template)
+    elif len(available) == 1:
+        t = available[0].get_template(template)
+    else:
+        print("Error: template not found")
     if t is not None:
         if params is None:
             params_path = t.get_params_path()
@@ -29,7 +46,7 @@ def do_template(template, output, params=None):
             params = parse_tps_file(params_path).evaluate()
         t.generate(output, params)
     else:
-        print("Error: template not found")
+        print("Error while reading template")
 
 stack.pushVariable("template_file")
 stack.pushVariable("output_directory")
@@ -85,11 +102,11 @@ stack.assignAction(verify_json, "Verify if JSON file coontains all parameters sp
 stack.popAll()
 
 stack.pushCommand("remote")
-stack.assignAction(lambda **kw: None, "Get all sources")
+stack.assignAction(lambda **kw: [print(source.get_name()) for source in config.list_sources()], "Get all sources")
 stack.pushCommand("add")
 stack.pushVariable("name")
 stack.pushVariable("url")
-stack.assignAction(lambda name, url, **kw: None, "Add new remote")
+stack.assignAction(lambda name, url, **kw: config.add_source(name, DirectoryTemplateSource(url)), "Add new remote")
 stack.pop()
 stack.pop()
 stack.pop()
