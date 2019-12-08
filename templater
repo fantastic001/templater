@@ -29,7 +29,7 @@ def do_template(template, output, params=None):
             available.append(source)
     if len(available) > 1:
         print("Please select from which source: ")
-        for i, source in enumerate(availablle):
+        for i, source in enumerate(available):
             print("[%d] %s/%s" % (i, source.get_name(), template))
         index = int(input(">> "))
         t = available[index].get_template(template)

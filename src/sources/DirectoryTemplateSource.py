@@ -46,7 +46,7 @@ class DirectoryTemplateSource(TemplateSource):
 
         Returns: str
         """
-        return os.path.normpath(self.path)
+        return os.path.normpath(os.path.abspath(self.path))
     
     def serialize(self):
         """
