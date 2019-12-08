@@ -48,12 +48,7 @@ def do_template(template, output, params=None):
     else:
         print("Error while reading template")
 
-stack.pushVariable("template_file")
-stack.pushVariable("output_directory")
-stack.pushVariable("json_file")
-stack.assignAction(lambda template_file, output_directory, json_file: TemplateFile(template_file).generate(output_directory, json.loads(open(json_file).read())), "Make  new file  from given template file and parameters in json file")
 
-stack.popAll()
 
 stack.pushCommand("create")
 stack.pushVariable("template")
@@ -112,12 +107,21 @@ stack.pop()
 stack.pop()
 stack.pushCommand("remove")
 stack.pushVariable("name")
-stack.assignAction(lambda name, **kw: None, "Remove remote")
+stack.assignAction(lambda name, **kw: config.remove_source(name), "Remove remote")
 stack.pop()
 stack.pop()
 stack.pushCommand("set-url")
 stack.pushVariable("name")
 stack.pushVariable("url")
 stack.assignAction(lambda name, url, **kw: None, "Set new URL to existing remote")
+
+stack.popAll()
+
+stack.pushVariable("template_file")
+stack.pushVariable("output_directory")
+stack.pushVariable("json_file")
+stack.assignAction(lambda template_file, output_directory, json_file: TemplateFile(template_file).generate(output_directory, json.loads(open(json_file).read())), "Make  new file  from given template file and parameters in json file")
+
+stack.popAll()
 
 stack.execute(sys.argv)

@@ -39,3 +39,10 @@ class Configuration:
     def save(self):
         with open(self.path, "w") as f:
             self.config.write(f)
+
+    def remove_source(self, name):
+        if "sources" not in self.config["DEFAULT"]:
+            return
+        self.config["DEFAULT"]["sources"] = " ".join(n for n in self.config["DEFAULT"]["sources"].split(" ") if n != name)
+        del self.config["source:%s" % name]
+        self.save()
