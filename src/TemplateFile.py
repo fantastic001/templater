@@ -11,6 +11,8 @@ class TemplateFile:
         output = os.path.split(self.path)[-1]
         for k,v in params.items():
             try:
+                if ("___%s___" % k) in output and (v == "" or v is None):
+                    return # if only one field is empty, do not create template file at all
                 output = output.replace("___%s___" % k, v)
             except TypeError:
                 pass

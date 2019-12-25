@@ -18,11 +18,16 @@ class TemplateDirectory:
         for root, dirs, files in os.walk(self.path):
             my_root = self.get_relative_root(root)
             print(root + " -> " + my_root)
+            ignore = False
             for k,v in params.items():
                 try:
+                    if ("___%s___" % k) in my_root and (v == "" or v is None):
+                        ignore = True
                     my_root = my_root.replace("___%s___" % k , v)
                 except TypeError:
                     pass
+            if ignore:
+                continue
             # first make path 
             os.makedirs(os.path.join(destination_dir_path, my_root), exist_ok=True)
             for name in files:
