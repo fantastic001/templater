@@ -47,13 +47,12 @@ def do_template(template, output, params=None):
                 try:
                     subprocess.run([editor, params_path])
                     params = parse_tps_file(params_path).evaluate()
+                    success = True
                 except:
                     print("Wrong input, try again? (y/n)")
                     answer = input(">> ")
                     if answer == "n": 
                         return 
-                finally:
-                    success = True
         t.generate(output, params)
     else:
         print("Error while reading template")
