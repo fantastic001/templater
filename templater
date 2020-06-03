@@ -40,10 +40,20 @@ def do_template(template, output, params=None):
     if t is not None:
         if params is None:
             params_path = t.get_params_path()
-            editor = os.environ["EDITOR"]
+            success = False
             import subprocess
-            subprocess.run([editor, params_path])
-            params = parse_tps_file(params_path).evaluate()
+            editor = os.environ["EDITOR"]
+            while not success:
+                try:
+                    subprocess.run([editor, params_path])
+                    params = parse_tps_file(params_path).evaluate()
+                except:
+                    print("Wrong input, try again? (y/n)")
+                    answer = input(">> ")
+                    if answer == "n": 
+                        return 
+                finally:
+                    success = True
         t.generate(output, params)
     else:
         print("Error while reading template")
@@ -98,6 +108,14 @@ stack.popAll()
 
 stack.pushCommand("remote")
 stack.assignAction(lambda **kw: [print(source.get_name()) for source in config.list_sources()], "Get all sources")
+
+stack.pushCommand("show")
+stack.pushVariable("name")
+stack.assignAction(lambda name, **kw: [[print(k) for k,v in source.get_templates().items()] for source in config.list_sources() if source.get_name() == name], "Get all sources")
+stack.pop()
+stack.pop()
+
+
 stack.pushCommand("add")
 stack.pushVariable("name")
 stack.pushVariable("url")
