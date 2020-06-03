@@ -43,6 +43,8 @@ some_object : {
     }
 }
 obj_list : [{a : string b : integer}] = [(a="a", b=1), (a ="AS", b = 2)]
+l : [integer] = []
+l2 : [{a : string}] = []
 """
 
 class Type:
@@ -206,11 +208,11 @@ class ListExpression(Expression):
     def __init__(self, ast):
         self.val = ast
     def get_type(self):
-        if self.val.first is None:
+        if self.val == []:
             return None # we do not know type of empty list
         return List(self.val.first.get_type())
     def evaluate(self):
-        if self.val.first is None:
+        if self.val == []:
             return []
         if self.val.rest is None:
             return [self.val.first.evaluate()]
@@ -309,4 +311,3 @@ def parse_tps(tps_code):
 def parse_tps_file(filename):
     f = open(filename, "r")
     return parse_tps(f.read())
-
