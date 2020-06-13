@@ -7,6 +7,7 @@ __all__ = [
 
 GRAMMAR = '''
     @@grammar::Calc
+    @@eol_comments :: /#.*?$/
 
     start = object $ ;
     object = params:{parameter_specification};
@@ -29,8 +30,11 @@ GRAMMAR = '''
 '''
 
 TEST = """
+# this is a comment
+param : string = "haha" # this is also a comment
 
-param : string = "haha"
+# and this
+
 param2 : integer = 5
 param3 : boolean
 some_list : [integer] = [1,2,3]
@@ -311,3 +315,4 @@ def parse_tps(tps_code):
 def parse_tps_file(filename):
     f = open(filename, "r")
     return parse_tps(f.read())
+
