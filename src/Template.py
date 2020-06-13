@@ -22,7 +22,11 @@ class Template:
         if "META_PRE.sh" in files:
             import subprocess
             print("Executing script %s" % os.path.join(self.path, "META_PRE.sh"))
-            ret = subprocess.Popen(["/".join([self.path, "META_PRE.sh"])], cwd=destination_dir_path).wait()
+            ret = subprocess.Popen(
+                ["/".join([self.path, "META_PRE.sh"])], 
+                cwd=destination_dir_path,
+                env={k:str(v) for k,v in params.items()}
+            ).wait()
             if ret != 0:
                 print("Preprocessing hook failed: error %d" % ret)
                 return
@@ -39,7 +43,11 @@ class Template:
         if "META_POST.sh" in files:
             import subprocess
             print("Executing script %s" % os.path.join(self.path, "META_POST.sh"))
-            ret = subprocess.Popen(["/".join([self.path, "META_POST.sh"])], cwd=destination_dir_path).wait()
+            ret = subprocess.Popen(
+                ["/".join([self.path, "META_POST.sh"])], 
+                cwd=destination_dir_path,
+                env={k:str(v) for k,v in params.items()}
+            ).wait()
             if ret != 0:
                 print("Postprocessing hook failed: error %d" % ret)
                 return
