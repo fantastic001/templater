@@ -1,0 +1,12 @@
+This layer depends on:
+
+URI: git://github.com/openembedded/oe-core.git
+branch: {{ branch }}
+revision: HEAD
+
+URI: git://github.com/openembedded/meta-oe.git
+layers: meta-oe
+branch: {{branch }}
+revision: HEAD
+
+Send pull requests to {{ maintainer_email }} with '[meta-{{ name }}][{{ branch }}]' in the subject'
