@@ -36,7 +36,7 @@ class Template:
                 print("Preprocessing hook failed: error %d" % ret)
                 return
             for line in stdout.split("\n"):
-                match =OUTPUT_VAR_RE.match(line):
+                match = OUTPUT_VAR_RE.match(line)
                 if match:
                     key = match.group(1)
                     value = match.group(2)
