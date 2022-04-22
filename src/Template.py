@@ -5,7 +5,9 @@ import os.path
 from .TemplateFile import * 
 from .TemplateDirectory import * 
 import datetime
+import re 
 
+OUTPUT_VAR_RE = re.compile(r"^TEMPLATE_VAR_([a-zA-Z0-9]+)=(.*)")
 
 class Template:
 
@@ -17,19 +19,29 @@ class Template:
         with open(path) as f:
             with open(self.get_params_path(), "w") as tmp:
                 tmp.write(f.read())
-    def generate(self, destination_dir_path, params):
+    def generate(self, destination_dir_path, params: dict):
         files = os.listdir(self.path)
         if "META_PRE.sh" in files:
             import subprocess
             print("Executing script %s" % os.path.join(self.path, "META_PRE.sh"))
-            ret = subprocess.Popen(
+            process = subprocess.Popen(
                 ["/".join([self.path, "META_PRE.sh"])], 
                 cwd=destination_dir_path,
+                stdout=subprocess.PIPE,
                 env={k:str(v) for k,v in params.items()}
-            ).wait()
+            )
+            stdout, stderr = process.communicate()
+            ret = process.returncode
             if ret != 0:
                 print("Preprocessing hook failed: error %d" % ret)
                 return
+            for line in stdout.split("\n"):
+                match =OUTPUT_VAR_RE.match(line):
+                if match:
+                    key = match.group(1)
+                    value = match.group(2)
+                    if key not in params:
+                        params[key] = value
         for name in os.listdir(self.path):
             fullpath = os.path.join(self.path, name)
             if name in ["META_PRE.sh", "META_POST.sh", self.params_file]:
