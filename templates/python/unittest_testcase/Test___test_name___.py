@@ -4,7 +4,7 @@ from {{ module_name }} import *
 import unittest 
 
 {% for dependency in dependencies %}
-class Mock{{ dependency }}({{ dependency["name"] }}):
+class Mock{{ dependency["name"] }}({{ dependency["name"] }}):
     {% for method in dependency["methods"] %}def {{ method["name"] }}(self, {% for p in range(method["param_count"])%}x{{p}}{% endfor%}):
         pass
     {% endfor %}
