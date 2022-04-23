@@ -7,7 +7,7 @@ from .TemplateDirectory import *
 import datetime
 import re 
 
-OUTPUT_VAR_RE = re.compile(r"^TEMPLATE_VAR_([a-zA-Z0-9]+)=(.*)")
+OUTPUT_VAR_RE = re.compile(r"^TEMPLATE_VAR_([_a-zA-Z0-9]+)=(.*)")
 
 class Template:
 
@@ -35,12 +35,13 @@ class Template:
             if ret != 0:
                 print("Preprocessing hook failed: error %d" % ret)
                 return
-            for line in stdout.split("\n"):
+            for line in stdout.decode("ascii").split("\n"):
                 match = OUTPUT_VAR_RE.match(line)
                 if match:
                     key = match.group(1)
                     value = match.group(2)
                     if key not in params:
+                        print("Adding new variable %s" % key )
                         params[key] = value
         for name in os.listdir(self.path):
             fullpath = os.path.join(self.path, name)

@@ -1,1 +1,3 @@
 this is {{ a }}
+{{ sample_output }}
+{{ modified_sample_output }}
